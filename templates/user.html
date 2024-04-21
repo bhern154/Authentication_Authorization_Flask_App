@@ -1,0 +1,38 @@
+{% extends 'base.html'  %}
+
+{% block title %}User Page{% endblock %}
+
+{% block content %}
+
+<h1>{{user_info.first_name}} {{user_info.last_name}}</h1>
+<p> Username: {{user_info.username}} | Email: {{user_info.email}}</p>
+
+
+<form action="/users/{{user_info.username}}/delete" method="post" style="float: left; padding-right: 40px;">
+    <input type="hidden" name="username" value="{{ user_info.username }}">
+    <button type="submit" class="btn btn-danger">Delete User</button>
+</form>
+
+<form action="/users/{{user_info.username}}/feedback/add" method="get">
+    <input type="hidden" name="username" value="{{ user_info.username }}">
+    <button type="submit" class="btn btn-success">Add Feedback</button>
+</form>
+
+<h2>Feedbacks:</h2>
+
+{% for feedback in feedbacks %}
+<div class="card bg-info text-white" style="margin: 20px; padding: 10px;">
+    <p class="card-title">{{ feedback.title }}</p>
+    <p class="card-body">{{ feedback.content }}</p>
+    <form action="/feedback/{{feedback.id}}/update" method="get">
+        <input type="hidden" name="id" value="{{ feedback.id }}">
+        <button type="submit" class="btn btn-success">Edit</button>
+    </form>
+    <form action="/feedback/{{feedback.id}}/delete" method="post">
+        <input type="hidden" name="id" value="{{ feedback.id }}">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+{% endfor %}
+
+{% endblock %}
